@@ -6,12 +6,6 @@ const Conflict = require('../errors/Conflict');
 const BadRequest = require('../errors/NotFound');
 const NotFound = require('../errors/NotFound');
 
-module.exports.getUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => res.send({ data: users }))
-    .catch(next);
-};
-
 module.exports.getUserInfo = (req, res, next) => {
   const { userId } = req.user;
 
@@ -20,21 +14,6 @@ module.exports.getUserInfo = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFound('Пользователь не найден'));
-      } else {
-        next(err);
-      }
-    });
-};
-
-module.exports.getIdUsers = (req, res, next) => {
-  const { userId } = req.params;
-  User.findById(userId).orFail()
-    .then((user) => res.send({ user }))
-    .catch((err) => {
-      if (err.name === 'DocumentNotFoundError') {
-        next(new NotFound('Пользователь с таким id не найден'));
-      } else if (err.name === 'CastError') {
-        next(new BadRequest('Ошибка в запросе'));
       } else {
         next(err);
       }
@@ -84,22 +63,6 @@ module.exports.updateUserAbout = (req, res, next) => {
         next(err);
       }
     });
-};
-
-module.exports.updateUserAvatar = (req, res, next) => {
-  const { avatar } = req.body;
-  const { userId } = req.user;
-  User.findByIdAndUpdate({ _id: userId }, { avatar }, { new: true, runValidators: true })
-    .then((user) => {
-      res.send({ data: user });
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequest('Ошибка в запросе'));
-      } else {
-        next(err);
-      }
-    });//
 };
 
 module.exports.login = (req, res, next) => {

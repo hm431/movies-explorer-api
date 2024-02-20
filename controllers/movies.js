@@ -1,10 +1,8 @@
 const Movie = require('../models/movie');
 
-
 const BadRequest = require('../errors/NotFound');
 const Forbidden = require('../errors/Forbidden');
 const NotFound = require('../errors/NotFound');
-
 
 module.exports.getMovie = (req, res, next) => {
   Movie.find({})
@@ -13,10 +11,30 @@ module.exports.getMovie = (req, res, next) => {
 };
 
 module.exports.createMovie = (req, res, next) => {
-  const { country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId  } = req.body;
+  const {
+    country, director,
+    duration, year,
+    description, image,
+    trailer, nameRU,
+    nameEN, thumbnail, movieId,
+  } = req.body;
   const { userId } = req.user;
 
-  Movie.create({ country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId, link, owner: userId })
+  Movie.create({
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+    //  link,
+    owner: userId,
+  })
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
       if (err.name === 'ValidationError') {

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const { ObjectId } = mongoose.Schema.Types;
+// const { ObjectId } = mongoose.Schema.Types;
 // напишите код здесь
 const movieSchema = new mongoose.Schema({
   country: { //  страна создания фильма. Обязательное поле-строка.
@@ -35,14 +35,15 @@ const movieSchema = new mongoose.Schema({
       validator: (avatar) => /^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-/])*)?/.test(avatar),
     },
   },
-  trailerLink: { // ссылка на трейлер фильма. Обязательное поле-строка. Запишите её URL-адресом.
+  trailer: { // ссылка на трейлер фильма. Обязательное поле-строка. Запишите её URL-адресом.
     type: String,
     required: true,
     validate: {
       validator: (avatar) => /^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-/])*)?/.test(avatar),
     },
   },
-  thumbnail: { // миниатюрное изображение постера к фильму. Обязательное поле-строка. Запишите её URL-адресом.
+  thumbnail: { // миниатюрное изображение постера к фильму. Обязательное поле-строка.
+    // Запишите её URL-адресом.
     type: String,
     required: true,
     validate: {
@@ -54,8 +55,9 @@ const movieSchema = new mongoose.Schema({
     required: true,
     ref: 'user',
   },
-  movieId: {  // TODO надо, возможно учитывать в создании, что он бертся из MoviesExplorer
-    //  id фильма, который содержится в ответе сервиса MoviesExplorer. Обязательное поле в формате number.
+  movieId: { // TODO надо, возможно учитывать в создании, что он бертся из MoviesExplorer
+  // id фильма, который содержится в ответе сервиса MoviesExplorer.
+  // Обязательное поле в формате number.
     type: Number,
     required: true,
     unique: true,
@@ -69,7 +71,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-  }
-})
+  },
+});
 
 module.exports = mongoose.model('movie', movieSchema);

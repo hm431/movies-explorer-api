@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { errors } = require('celebrate');
@@ -43,15 +44,11 @@ app.post('/signup', celebrate({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(6),
     name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi
-      .string()
-      .pattern(/^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-/])*)?/),
   }),
 }), createUsers); // Создание пользователя
 
-app.use('/users', auth, require('./routes/users'));
 app.use('/movies', auth, require('./routes/movies'));
+app.use('/users', auth, require('./routes/users'));
 
 app.use('/', () => {
   throw new NotFound('Путь не найден');
